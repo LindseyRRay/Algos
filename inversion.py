@@ -1,27 +1,11 @@
-#Computer number of inversions in a file
-#Where the ith row of the number indicates the array position
-#implement the divide and conquer algorithm described
-#numberic integer should be output
+#Utilizes the mergesort algorithm to calculate number of inversion
+#Program takes large file of numbers, and sorts with merge sort
+#Also calculates number of inversions, or when numbers needed 
+#to be swapped during sorting recursively
+
 #the file contains all of integers 1 - 100,000 inclusive
-import pdb
 
 
-''' Pseudo Code
-
-COunt(array A, length n):
-	if n=1, return 0
-	else
-		X= Count(A/2, n/2)
-		Y = Count(A/2 (second half), n/2)
-		Z = CountSplitInv(A,n)
-	return x+y+Z
-	for k=1 to n 
-		if B(i) < C(j)
-			D(k) = B(i)
-			i++
-		else [C(j) < B(i)]
-				D(k) = B(j)
-				j++'''
 
 def merge_sort(arr):
 	#Base case, length of array if 1
@@ -29,6 +13,7 @@ def merge_sort(arr):
 	if n == 1 :
 		return arr, 0
 	else:
+		#apply sort to sub arrays, return number of inversions and arrays
 		first_half, inversions_1 = list(merge_sort(arr[: int(n/2)]))
 		second_half, inversions_2 = list(merge_sort(arr[int(n/2):]))
 
@@ -36,7 +21,7 @@ def merge_sort(arr):
 		sorted_arr = [0]
 		i, j = 0, 0
 		
-
+#correctly merge the two smaller sub arrays
 		for k in range(n):
 			if i < len(first_half) and j < len(second_half):
 				if first_half[i] < second_half[j]:
@@ -47,7 +32,7 @@ def merge_sort(arr):
 					j += 1
 					num_inversions += len(first_half) - i
 	
-
+#append any additional elements in subarrays
 		if len(first_half) == i:
 			sorted_arr.extend(second_half[j:])
 		else:
