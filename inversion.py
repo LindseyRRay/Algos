@@ -27,26 +27,18 @@ def merge_sort(arr):
 	#Base case, length of array if 1
 	n = len(arr)
 	if n == 1 :
-		return arr
+		return arr, 0
 	else:
-		print(n)
-		#if n ==2:
-			#pdb.set_trace()
-		first_half = list(merge_sort(arr[: int(n/2)]))
-		print("first %s" %first_half)
-		second_half = list(merge_sort(arr[int(n/2):]))
-		print("second%s" %second_half)
+		first_half, inversions_1 = list(merge_sort(arr[: int(n/2)]))
+		second_half, inversions_2 = list(merge_sort(arr[int(n/2):]))
+
+		num_inversions = inversions_1 + inversions_2
 		sorted_arr = [0]
 		i, j = 0, 0
 		
 
 		for k in range(n):
-			print("Sorted %s" %sorted_arr)
 			if i < len(first_half) and j < len(second_half):
-				print("Entering")
-
-				print(first_half[i])
-				print(second_half[j])
 				if first_half[i] < second_half[j]:
 					sorted_arr.extend([first_half[i]])
 					i += 1
@@ -61,16 +53,21 @@ def merge_sort(arr):
 		else:
 			sorted_arr.extend(first_half[i:])
 		
-		return sorted_arr[1:]
+		return sorted_arr[1:], num_inversions
 
 
 if __name__ == '__main__':
 
-	num_inversions = 0
+	#reads in text file with integers and creates list
+	import csv
+	integer_list = list()
 
-	test_1 = [5, 6, 7, 5, 6, 2, 3, 1, 9, 0, 0, 2]
+	with open('IntegerArray.txt', encoding = 'utf-8') as f:
+		for line in f:
+			integer_list.append(int(line.strip()))
 
-	print(merge_sort(test_1))
-	print(num_inversions)
+
+	print(merge_sort(integer_list)[1])
+	
 
 
