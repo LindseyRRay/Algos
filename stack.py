@@ -1,4 +1,6 @@
 #implementa stack data structure in python
+#The end of the list is considered the head, where the most recent items are added
+
 
 class Stack():
 	def __init__(self):
