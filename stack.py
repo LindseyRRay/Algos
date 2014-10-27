@@ -10,7 +10,10 @@ class Stack():
 		return self.items.append(item)
 
 	def pop(self):
-		return self.items[-1]
+		last = self.items[-1]
+		self.items = self.items[:-1]
+		return last
+
 
 	def peek(self):
 		new = self.items[-1]
