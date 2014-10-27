@@ -1,6 +1,7 @@
 #Converts decimal numbers to binary using the Python Stack
 import stack as s
 import pdb
+import random
 
 def convert(decimal, base=2):
 	stack = s.Stack()
@@ -9,7 +10,7 @@ def convert(decimal, base=2):
 		remainder = decimal%base
 		stack.push(remainder)
 		decimal = int((decimal/base))
-	print(len(stack.items))
+
 	return stack
 
 def output_binary(binary_stack):
@@ -19,6 +20,12 @@ def output_binary(binary_stack):
 	return "".join(map(str, final_string))
 
 if __name__ == '__main__':
-	new_stack = convert(23,2)
-	#pdb.set_trace()
-	print(output_binary(new_stack))
+	#Tests Convert binary function on 100 random integers
+	i=0
+	while i < 100:
+		test = random.randint(0,1000000)
+		assert bin(test)[2:] == output_binary(convert(test)), "Test Failed"
+		print("Binary = %s" %bin(test)[2:] )
+		print("My Binary = %s" % output_binary(convert(test)))
+		i += 1
+	
