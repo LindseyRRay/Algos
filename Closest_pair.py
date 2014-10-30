@@ -3,7 +3,11 @@ write mergesort definition
 write split and sort definition
 1) make two copies of arrays, split
 recursive call in subarrays
-function that calculates Euclidiean distance'''
+function that calculates Euclidiean distance
+
+Questions- why is extend not working
+Why the X and Y part?''
+'''
 import math
 import operator
 import pdb
@@ -115,8 +119,8 @@ def closest_points(input_array):
 
 		
 
-		first_delta, first_pair = closest_points(first_x + first_y)
-		second_delta, second_pair = closest_points(second_x  + second_y)
+		first_delta, first_pair = closest_points(first_x)
+		second_delta, second_pair = closest_points(second_x)
 		#pdb.set_trace()
 		temp_best = min(first_delta, second_delta)
 		split_array = [x for x in input_array if abs(x.x - input_array[midpoint].x) < temp_best]
