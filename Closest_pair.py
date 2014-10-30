@@ -24,7 +24,7 @@ class Point(object):
 
 
 def Euclidian_distance(point_a, point_b):
-	return math.sqrt(math.pow((point_a.x - point_b.x), 2) + math.pow((point_a.x - point_b.x),2))
+	return math.sqrt(math.pow((point_a.x - point_b.x), 2) + math.pow((point_a.y - point_b.y),2))
 
 
 def mergesort(input_array, attribute):
@@ -73,77 +73,82 @@ def mergesort(input_array, attribute):
 	return final_output
 
 
-def split_sort(input_array, delta):
+def split_sort(y_prime, delta):
 	#double for loop, for each element in array
 	best_delta = delta
 	best_pair = (None, None)
-	for i in range(max(0, len(input_array) - 1)):
-		for j in range(max(0, i - 8), min(i+8, len(input_array)-1)):
-			if i == j:
-				pass
-			else:
-
-				d = Euclidian_distance(input_array[i], input_array[j])
-				if d < best_delta:
-					best_delta = d
-					best_pair = (input_array[i], input_array[j])
+	for i in range(len(y_prime)):
+		for j in range(i+1, min(i+8, len(y_prime))):
+			d = Euclidian_distance(y_prime[i], y_prime[j])
+			if d < best_delta:
+				best_delta = d
+				best_pair = (y_prime[i], y_prime[j])
 	return best_delta, best_pair 
 
 def brute_force(input_array):
 	if len(input_array) < 2:
 		return None, (None, None)
-	distances = [(Euclidian_distance(x, y), (x, y)) for x in input_array for y in input_array[x.index:] if not(x.x==y.y and y.x==y.y)]
+	distances = [(Euclidian_distance(x, y), (x, y)) for x in input_array for y in input_array[input_array.index(x)+1:]]
 	sorted_distances = sorted(distances, key = operator.itemgetter(0))
 	return sorted_distances[0]
 
 
-def closest_points(input_array):
+def closest_points(input_array, input_array_x, input_array_y):
 	#base case, 2 points, calculate distance and return it
 
 
 	if len(input_array) <=3:
 		delta, best_pair = brute_force(input_array)
-		return delta, best_pairs
+		return delta, best_pair
 	#create a copy of array, split into 2 subsorted arrays
+
 	else:	
-		input_array_x = mergesort(copy.deepcopy(input_array), 'x')
-		input_array_y = mergesort(copy.deepcopy(input_array), 'y')
+		#Input array is subset of pooints in plane, not sorted
+		#input_array_x is set of points in plane sorted by x coordinate
+		#input array y is set of points sorted by y coordinate
+
 		midpoint = int(len(input_array)/2)
-		first_x = copy.deepcopy(input_array_x[:midpoint])
-		first_y = copy.deepcopy(input_array_y[:midpoint])
-		second_x = copy.deepcopy(input_array_x[midpoint:])
-		second_y = copy.deepcopy(input_array_y[midpoint:])
+		first_p = input_array_x[:midpoint]
+		second_p = input_array_x[midpoint:]
+		first_x = [i for i in input_array_x if i in first_p]
+		first_y = [i for i in input_array_y if i in first_p]
+		second_x = [i for i in input_array_x if i in second_p]
+		second_y = [i for i in input_array_y if i in second_p]
 		##pdb.set_trace()
 		#first = list(first_x + first_y)
 		#second = list(second_x.extend(second_y))
 
 		
 
-		first_delta, first_pair = closest_points(first_x)
-		second_delta, second_pair = closest_points(second_x)
+		first_delta, first_pair = closest_points(first_p, first_x, first_y)
+		second_delta, second_pair = closest_points(second_p, second_x, second_y)
 		#pdb.set_trace()
 		temp_best = min(first_delta, second_delta)
-		split_array = [x for x in input_array if abs(x.x - input_array[midpoint].x) < temp_best]
+		split_array = [x for x in input_array_y if abs(x.x - input_array[midpoint].x) <= temp_best]
 
-		split_delta, split_pair = split_sort(split_array)
+		split_delta, split_pair = split_sort(split_array, temp_best)
 
 		if split_pair[0] is None:
 			if first_delta < second_delta:
 				return first_delta, first_pair
-			return second_delta, second_delta
+			return second_delta, second_pair
 		return split_delta, split_pair
-		
+
+def closest_pair_algo(input_array):
+	#Creates a list of input arrays
+#takes input array, sorts it using merge sort into x and y arrays, and passes to the function
+#returns closest difference
+	sorted_x = mergesort(input_list, 'x')
+	sorted_y = mergesort(input_list, 'y')
+
+	delta, pair = closest_points(input_list, sorted_x, sorted_y)
+	return delta, pair
+
+
 
 if __name__ == '__main__':
-	input_list = [Point(random.randint(-100, 100), random.randint(-100, 100)) for x in range(10)]
-	for i in range(len(input_list)):
-	
-		print("mergesort %s " %input_list[i].x)
-	
-	sorted_x = mergesort(input_list, 'x')
-
-	for i in range(len(input_list)):
-		print("mergesort %s " %sorted_x[i].x)
-
-
+	input_list = [Point(random.randint(-100, 100), random.randint(-100, 100)) for x in range(100)]
+	print("Difference %s" %(closest_pair_algo(input_list)[0]))
+	print("Pair 1: %s, %s" %(closest_pair_algo(input_list)[1][0].x, closest_pair_algo(input_list)[1][0].y))
+	print("Pair 2: %s, %s" %(closest_pair_algo(input_list)[1][1].x, closest_pair_algo(input_list)[1][1].y))
 
