@@ -4,6 +4,7 @@ import Closest_pair as cp
 import random
 import pdb 
 import operator
+import math
 
 
 class Test(unittest.TestCase):
@@ -43,15 +44,35 @@ class Test(unittest.TestCase):
 		best_pair = sorted_distances[0][1]
 	
 		self.assertEqual(best_pair[0].x, sort_pair[0].x)
-		self.assertEqual(best_pair[0].y, sort_pair[0].y)		
+		self.assertEqual(best_pair[0].y, sort_pair[0].y)	
+
+	def test_euc_distance(self):
+		input_list = [cp.Point(random.randint(-100, 100), random.randint(-100, 100)) for x in range(2)]
+
+		euc_dist = cp.Euclidian_distance(input_list[0], input_list[1])
+		#pdb.set_trace()
+		brute_distance = math.sqrt(math.pow(input_list[0].x - input_list[1].x, 2) + math.pow(input_list[0].y - input_list[1].y, 2))
+
+		print("Algo Dif %s" %euc_dist)
+		print("Brute Dif %s" %brute_distance)
+		self.assertEqual(brute_distance, euc_dist)
+
 
 
 	def test_closest_pair(self):
-		input_list = [cp.Point(random.randint(-100, 100), random.randint(-100, 100)) for x in range(100)]
-		final_delta, final_pair = cp.closest_points(input_list)
+		input_list = [cp.Point(random.randint(-100, 100), random.randint(-100, 100)) for x in range(10)]
+		sorted_input_x = cp.mergesort(input_list, 'x')
+		sorted_input_y = cp.mergesort(input_list, 'y')
+		[print((x.x, x.y)) for x in input_list]
+		print("Sorted X")
+		[print((x.x, x.y)) for x in sorted_input_x]
+		print("Sorted Y")
+		[print((x.x, x.y)) for x in sorted_input_y]
+
+		final_delta, final_pair = cp.closest_points(input_list, sorted_input_x, sorted_input_y)
 
 		brute_force_delta, brute_force_pair = cp.brute_force(input_list)
-
+		
 		print("Algo delta %s Algo Pair %s, %s and %s, %s" %(final_delta, final_pair[0].x, final_pair[0].y, final_pair[1].x, final_pair[1].y ))			
 
 
