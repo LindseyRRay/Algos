@@ -34,9 +34,8 @@ class Linked_List(object):
 	def isEmpty(self):
 		return self.head == None
 
-	def add(self, new_node_data):
+	def add(self, new_node):
 		''' adds a new node to the beginning of the list''' 
-		new_node = Node(new_node_data)
 		new_node.setNext(self.head)
 		self.head = new_node
 		if self.head != None:
@@ -81,10 +80,14 @@ class Linked_List(object):
 			else:
 				current = current.getNext()
 
-	def insert(self, new_item):
+	def insert(self, new_item, position):
 		'''adds a new item into a specific position'''
-		temp = self.index(new_item)
-		new_item.previous = temp.previous
+		temp = self.index(position)
+		print(temp.data)
+		if temp.previous != None:
+
+			new_item.previous = temp.previous
+
 		new_item.next = temp.next
 		temp.previous = new_item
 		temp.previous.next = new_item
@@ -97,10 +100,9 @@ class Linked_List(object):
 		while count > 0:
 			start = start.getNext()
 			count -= 1
-		if count < self.size():
-			return start
-		else:
-			raise ValueError
+		print(type(start))
+		return start
+
 
 
 
@@ -113,10 +115,11 @@ if __name__ == '__main__':
 	llist.add(test)
 	#pdb.set_trace()
 
-	assert llist.size() ==1, "Size of list Calculating Incorrectly"
+	#assert llist.size() ==1, "Size of list Calculating Incorrectly"
 	llist.add(test2)
 	llist.head.getData()
-	test2.getData()
+	print(llist.index(0).data)
+	llist.insert(Node(300),2)
 	print(llist.head.data)
 
 

@@ -20,7 +20,7 @@ def output_binary(binary_stack):
 	return "".join(map(str, final_string))
 
 if __name__ == '__main__':
-	#Tests Convert binary function on 100 random integers
+	#Tests Convert binary function on 100 random
 	i=0
 	while i < 100:
 		test = random.randint(0,1000000)
