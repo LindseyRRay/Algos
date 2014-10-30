@@ -39,7 +39,7 @@ class StateManager:
 		elif self.current_state == State.check_angle and not is_right_turn:
 			self.current_state = State.push
 
-		elif slef.current_state == State.pop:
+		elif self.current_state == State.pop:
 			self.current_state = State.check_angle
 
 		elif self.current_state == State.push and out_of_points:
@@ -51,7 +51,7 @@ class StateManager:
 		else:
 			raise Exception("Bad State Transition")
 
-			
+
 
 
 
